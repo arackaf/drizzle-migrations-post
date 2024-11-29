@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, foreignKey, integer, text, date } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, text, date, foreignKey, integer, index } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const users = pgTable("users", {
@@ -7,30 +7,6 @@ export const users = pgTable("users", {
   name: varchar({ length: 250 }),
   avatar: varchar({ length: 500 }),
 });
-
-export const tasks = pgTable(
-  "tasks",
-  {
-    id: serial().primaryKey().notNull(),
-    name: varchar({ length: 250 }),
-    epicid: integer(),
-    userid: integer(),
-  },
-  (table) => {
-    return {
-      fkTaskUser: foreignKey({
-        columns: [table.userid],
-        foreignColumns: [users.id],
-        name: "fk_task_user",
-      }),
-      fkTaskEpic: foreignKey({
-        columns: [table.epicid],
-        foreignColumns: [epics.id],
-        name: "fk_task_epic",
-      }),
-    };
-  }
-);
 
 export const epics = pgTable("epics", {
   id: serial().primaryKey().notNull(),
@@ -62,6 +38,32 @@ export const tasksTags = pgTable(
         columns: [table.task],
         foreignColumns: [tasks.id],
         name: "fk_tasks_tags_task",
+      }),
+    };
+  }
+);
+
+export const tasks = pgTable(
+  "tasks",
+  {
+    id: serial().primaryKey().notNull(),
+    name: varchar({ length: 250 }),
+    epicid: integer(),
+    userid: integer(),
+    importance: integer(),
+  },
+  (table) => {
+    return {
+      idxTasksEpic: index("idx_tasks_epic").using("btree", table.epicid.asc().nullsLast().op("int4_ops")),
+      fkTaskUser: foreignKey({
+        columns: [table.userid],
+        foreignColumns: [users.id],
+        name: "fk_task_user",
+      }),
+      fkTaskEpic: foreignKey({
+        columns: [table.epicid],
+        foreignColumns: [epics.id],
+        name: "fk_task_epic",
       }),
     };
   }
