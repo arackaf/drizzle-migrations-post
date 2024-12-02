@@ -12,8 +12,8 @@ CREATE TABLE users (
 CREATE TABLE tasks (
     id SERIAL PRIMARY KEY,
     name VARCHAR(250),
-    epicId INT,
-    userId INT
+    epic_id INT,
+    user_id INT
 );
 
 CREATE TABLE epics (
@@ -36,12 +36,12 @@ CREATE TABLE tasks_tags (
 
 ALTER TABLE tasks
     ADD CONSTRAINT fk_task_user
-    FOREIGN KEY (userId)
+    FOREIGN KEY (user_id)
     REFERENCES users (id);
 
 ALTER TABLE tasks
     ADD CONSTRAINT fk_task_epic
-    FOREIGN KEY (epicId)
+    FOREIGN KEY (epic_id)
     REFERENCES epics (id);
 
 ALTER TABLE tasks_tags
