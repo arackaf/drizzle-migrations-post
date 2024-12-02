@@ -1,9 +1,15 @@
 import { db } from "./db";
 
 async function run() {
-  const users = await db.query.users.findMany({});
+  const tasks = await db.query.tasks.findMany({
+    with: {
+      user: true,
+    },
+  });
 
-  console.log({ users });
+  for (const task of tasks) {
+    console.log(task);
+  }
 }
 
 run();
