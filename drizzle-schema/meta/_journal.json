@@ -8,6 +8,13 @@
       "when": 1733116241761,
       "tag": "0000_warm_eddie_brock",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1733116361201,
+      "tag": "0001_equal_warstar",
+      "breakpoints": true
     }
   ]
 }
