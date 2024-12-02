@@ -1,4 +1,4 @@
-import { pgTable, serial, varchar, foreignKey, integer, text, date } from "drizzle-orm/pg-core";
+import { pgTable, serial, varchar, foreignKey, integer, text, date, index } from "drizzle-orm/pg-core";
 import { sql } from "drizzle-orm";
 
 export const users = pgTable("users", {
@@ -6,6 +6,7 @@ export const users = pgTable("users", {
   username: varchar({ length: 50 }),
   name: varchar({ length: 250 }),
   avatar: varchar({ length: 500 }),
+  importance: integer(),
 });
 
 export const tasks = pgTable(
@@ -18,11 +19,12 @@ export const tasks = pgTable(
   },
   (table) => {
     return {
+      epicsIndex: index("idx_tasks_epicId").on(table.epicId.asc()),
       fkTaskUser: foreignKey({
         columns: [table.userId],
         foreignColumns: [users.id],
         name: "fk_task_user",
-      }),
+      }).onDelete("cascade"),
       fkTaskEpic: foreignKey({
         columns: [table.epicId],
         foreignColumns: [epics.id],
