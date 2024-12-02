@@ -1,5 +1,25 @@
 import { relations } from "drizzle-orm/relations";
-import { tags, tasksTags, tasks, users, epics } from "./schema";
+import { users, tasks, epics, tags, tasksTags } from "./schema";
+
+export const tasksRelations = relations(tasks, ({ one, many }) => ({
+  user: one(users, {
+    fields: [tasks.userId],
+    references: [users.id],
+  }),
+  epic: one(epics, {
+    fields: [tasks.epicId],
+    references: [epics.id],
+  }),
+  tasksTags: many(tasksTags),
+}));
+
+export const usersRelations = relations(users, ({ many }) => ({
+  tasks: many(tasks),
+}));
+
+export const epicsRelations = relations(epics, ({ many }) => ({
+  tasks: many(tasks),
+}));
 
 export const tasksTagsRelations = relations(tasksTags, ({ one }) => ({
   tag: one(tags, {
@@ -14,24 +34,4 @@ export const tasksTagsRelations = relations(tasksTags, ({ one }) => ({
 
 export const tagsRelations = relations(tags, ({ many }) => ({
   tasksTags: many(tasksTags),
-}));
-
-export const tasksRelations = relations(tasks, ({ one, many }) => ({
-  tasksTags: many(tasksTags),
-  user: one(users, {
-    fields: [tasks.userid],
-    references: [users.id],
-  }),
-  epic: one(epics, {
-    fields: [tasks.epicid],
-    references: [epics.id],
-  }),
-}));
-
-export const usersRelations = relations(users, ({ many }) => ({
-  tasks: many(tasks),
-}));
-
-export const epicsRelations = relations(epics, ({ many }) => ({
-  tasks: many(tasks),
 }));

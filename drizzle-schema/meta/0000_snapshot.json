@@ -57,14 +57,14 @@
           "primaryKey": false,
           "notNull": false
         },
-        "epicid": {
-          "name": "epicid",
+        "epic_id": {
+          "name": "epic_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
         },
-        "userid": {
-          "name": "userid",
+        "user_id": {
+          "name": "user_id",
           "type": "integer",
           "primaryKey": false,
           "notNull": false
@@ -78,7 +78,7 @@
           "tableTo": "users",
           "schemaTo": "public",
           "columnsFrom": [
-            "userid"
+            "user_id"
           ],
           "columnsTo": [
             "id"
@@ -92,7 +92,7 @@
           "tableTo": "epics",
           "schemaTo": "public",
           "columnsFrom": [
-            "epicid"
+            "epic_id"
           ],
           "columnsTo": [
             "id"
